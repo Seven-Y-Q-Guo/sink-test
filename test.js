@@ -11,7 +11,7 @@ sink('another module', function (test, ok) {
   });
 });
 
-sink('should have foo', function(test, ok) {
+sink('should have foo', function(test, ok, assert) {
   test('two success', function () {
     fetch('http://jsonplaceholder.typicode.com/posts')
       .then(res => {
