@@ -9,13 +9,19 @@ const error = (msg) => {
 function sink(name, cb) {
   cb(test, ok);
 }
+
 function test(description, cb) {
-  cb()
+  cb();
 }
+
 function ok(isTrue, message) {
   if (isTrue) {
     success(message);
   } else {
     error(message);
   }
+}
+
+function assert(actual, expected, message) {
+  ok(actual === expected, message);
 }
