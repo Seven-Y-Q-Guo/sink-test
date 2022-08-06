@@ -1,13 +1,13 @@
 sink('should fail', function ({test, ok}) {
   test('a failure', function () {
-    ok(1 === 2, 'should fail')
+    ok(1 === 2, 'should fail');
   });
 });
 
 sink('should pass', function ({test, ok}) {
   test('two success', function () {
-    ok(true, 'this is basically true')
-    ok(1 === 1, 'also true for you math majors')
+    ok(true, 'this is basically true');
+    ok(1 === 1, 'also true for you math majors');
   });
 });
 
@@ -27,7 +27,21 @@ sink('should timeout', function({test, ok, assert}) {
     setTimeout(function () {
       const result = complete();
 
-      ok(result.message === 'timeout', 'timeout')
+      ok(result.message === 'timeout', 'timeout');
+    }, 4000);
+  });
+});
+
+sink('should reset timeout', function({test, ok, assert, before}) {
+  before(function() {
+    sink.timeout = 5000;
+  });
+
+  test('a success', function(complete) {
+    setTimeout(function () {
+      const result = complete();
+
+      ok(result.message === 'complete', 'reset timeout successfully');
     }, 4000);
   });
 });

@@ -1,5 +1,6 @@
 ((exports) => {
   let startTime, endTime;
+
   const success = (msg) => {
     console.log(`%c${msg}`, "color: green");
   };
@@ -9,7 +10,7 @@
   }
 
   function sink(name, cb) {
-    cb({test, ok, assert});
+    cb({test, ok, assert, before});
   }
 
   sink.timeout = 3000;
@@ -37,6 +38,14 @@
     if ((endTime - startTime) > sink.timeout) {
       return new Error('timeout');
     }
+
+    return {
+      message: 'complete'
+    };
+  }
+
+  function before(cb) {
+    cb();
   }
 
   exports.sink = sink;
