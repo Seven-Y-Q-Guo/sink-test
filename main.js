@@ -8,7 +8,7 @@
   }
 
   function sink(name, cb) {
-    cb(test, ok, assert);
+    cb({test, ok, assert});
   }
 
   function test(description, cb) {
