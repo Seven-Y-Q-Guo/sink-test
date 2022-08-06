@@ -1,5 +1,7 @@
 ((exports) => {
   let startTime, endTime;
+  let isWait = false;
+  let listeners = [];
 
   const success = (msg) => {
     console.log(`%c${msg}`, "color: green");
@@ -16,8 +18,13 @@
   sink.timeout = 3000;
 
   function test(description, cb) {
-    startTime = new Date().getTime();
-    cb(complete);
+    if (isWait) {
+      listeners.push(cb);
+    } else {
+      startTime = new Date().getTime();
+      cb(complete);
+    }
+
   }
 
   function ok(isTrue, message) {
@@ -33,19 +40,30 @@
   }
 
   function complete() {
+    let result = {};
     endTime = new Date().getTime();
 
     if ((endTime - startTime) > sink.timeout) {
-      return new Error('timeout');
+      result = new Error('timeout');
+    } else {
+      result = {
+        message: 'complete'
+      };
     }
 
-    return {
-      message: 'complete'
-    };
+    listeners.forEach(listener => {
+      startTime = new Date().getTime();
+      listener(complete);
+    });
+
+    listeners = [];
+
+    return result;
   }
 
   function before(cb) {
-    cb();
+    isWait = true;
+    listeners.push(cb);
   }
 
   exports.sink = sink;
